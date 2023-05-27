@@ -446,7 +446,7 @@ class FirebaseAccount {
   /// different user by firebase.
   Future<void> delete() async {
     await api.delete(DeleteRequest(idToken: _idToken));
-    dispose();
+    await dispose();
   }
 
   /// Disposes the account
@@ -456,10 +456,10 @@ class FirebaseAccount {
   ///
   /// **Important:** Even if you do not use any of the two properties mentioned
   /// above, you still have to always dispose of an account.
-  void dispose() {
+  Future<void> dispose() async {
     autoRefresh = false;
     if (!_refreshController.isClosed) {
-      _refreshController.close();
+      await _refreshController.close();
     }
   }
 
@@ -485,7 +485,7 @@ class FirebaseAccount {
         refreshToken: response.refresh_token,
         expiresIn: response.expires_in,
       );
-    } catch (_) {
+    } on Exception catch (_) {
       autoRefresh = false;
       rethrow;
     }
@@ -508,7 +508,7 @@ class FirebaseAccount {
       if (_refreshController.hasListener) {
         _refreshController.add(_idToken);
       }
-    } catch (_) {
+    } on Exception catch (_) {
       autoRefresh = false;
       rethrow;
     }
@@ -517,7 +517,7 @@ class FirebaseAccount {
   Future _updateTokenTimout() async {
     try {
       await _updateToken();
-    } catch (e, s) {
+    } on Exception catch (e, s) {
       // redirect exceptions to listeners, if any
       if (_refreshController.hasListener) {
         _refreshController.addError(e, s);

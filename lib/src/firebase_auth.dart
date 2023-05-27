@@ -57,7 +57,7 @@ class FirebaseAuth {
     final response = await api.fetchProviders(
       FetchProviderRequest(
         identifier: email,
-        continueUri: continueUri ?? Uri.http('localhost', ''),
+        continueUri: continueUri ?? Uri.http('localhost'),
       ),
     );
     return [

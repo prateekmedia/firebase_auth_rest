@@ -30,9 +30,9 @@ Future main(List<String> arguments) async {
       print('Account deleted!');
     } finally {
       // dispose of the account instance to clean up resources
-      account.dispose();
+      await account.dispose();
     }
-  } catch (e) {
+  } on Exception catch (e) {
     print(e);
     print(
       'Pass your API-Key as first parameter and make sure, anonymous '
